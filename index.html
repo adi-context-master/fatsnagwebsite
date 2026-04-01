@@ -198,6 +198,16 @@
     text-align: center;
   }
 
+  .form-msg {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 6px;
+    min-height: 20px;
+  }
+  .form-msg.success { color: #1a7a2e; }
+  .form-msg.error { color: var(--red); }
+
   /* ── FEATURE TICKER ── */
   .ticker-wrap {
     overflow: hidden;
@@ -602,18 +612,21 @@
       <h2 class="hero-card-title">Join the waitlist for early access</h2>
       <p class="hero-card-sub">Limited spots for founding creators &amp; <span class="red">Snaggers!</span></p>
 
-      <input class="hero-email" type="email" placeholder="you@email.com">
+      <form id="hero-form" class="waitlist-form">
+        <input class="hero-email" type="email" placeholder="you@email.com" required>
 
-      <div class="hero-radio-row">
-        <label class="hero-radio-label">
-          <input type="radio" name="hero-role" value="lend" checked> I have gear to lend
-        </label>
-        <label class="hero-radio-label">
-          <input type="radio" name="hero-role" value="rent"> I want to rent gear
-        </label>
-      </div>
+        <div class="hero-radio-row">
+          <label class="hero-radio-label">
+            <input type="radio" name="hero-role" value="lend" checked> I have gear to lend
+          </label>
+          <label class="hero-radio-label">
+            <input type="radio" name="hero-role" value="rent"> I want to rent gear
+          </label>
+        </div>
 
-      <button class="hero-submit">Get early access</button>
+        <button type="submit" class="hero-submit">Get early access</button>
+        <p class="form-msg" id="hero-msg"></p>
+      </form>
 
       <p class="hero-proof">Join 100+ creators already signed up</p>
     </div>
@@ -750,18 +763,21 @@
       <h3 class="form-title">Get early access before launch</h3>
       <p class="form-sub">Limited spots for founding creators &amp; <span class="red">Snaggers!</span></p>
 
-      <input class="email-input" type="email" placeholder="you@email.com">
+      <form id="bottom-form" class="waitlist-form">
+        <input class="email-input" type="email" placeholder="you@email.com" required>
 
-      <div class="radio-row">
-        <label class="radio-label">
-          <input type="radio" name="role" value="lend" checked> I have gear to lend
-        </label>
-        <label class="radio-label">
-          <input type="radio" name="role" value="rent"> I want to rent gear
-        </label>
-      </div>
+        <div class="radio-row">
+          <label class="radio-label">
+            <input type="radio" name="role" value="lend" checked> I have gear to lend
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="role" value="rent"> I want to rent gear
+          </label>
+        </div>
 
-      <button class="submit-btn">Get early access</button>
+        <button type="submit" class="submit-btn">Get early access</button>
+        <p class="form-msg" id="bottom-msg"></p>
+      </form>
       <p class="form-proof">Join 100+ creators already signed up</p>
     </div>
   </div>
@@ -777,5 +793,47 @@
   </footer>
 
 </div>
+
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyBJ4aA9nZqAcyOV7hFY37ypqeRIniNwioiUURGqx7Oxy0CFDK9JV8ZiqbCykUHLfD0Ww/exec';
+
+  document.querySelectorAll('.waitlist-form').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var emailInput = form.querySelector('input[type="email"]');
+      var roleInput = form.querySelector('input[type="radio"]:checked');
+      var msgEl = form.querySelector('.form-msg');
+      var btn = form.querySelector('button[type="submit"]');
+
+      var email = emailInput.value.trim();
+      if (!email) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+      msgEl.textContent = '';
+      msgEl.className = 'form-msg';
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, role: roleInput.value })
+      })
+      .then(function() {
+        msgEl.textContent = "You're on the list! We'll be in touch soon.";
+        msgEl.className = 'form-msg success';
+        emailInput.value = '';
+        btn.textContent = 'Get early access';
+        btn.disabled = false;
+      })
+      .catch(function() {
+        msgEl.textContent = 'Something went wrong. Please try again.';
+        msgEl.className = 'form-msg error';
+        btn.textContent = 'Get early access';
+        btn.disabled = false;
+      });
+    });
+  });
+</script>
 </body>
 </html>
