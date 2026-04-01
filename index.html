@@ -205,8 +205,57 @@
     margin-top: 6px;
     min-height: 20px;
   }
-  .form-msg.success { color: #1a7a2e; }
   .form-msg.error { color: var(--red); }
+
+  .success-state {
+    text-align: center;
+    padding: 20px 0;
+    animation: fadeUp 0.4s ease;
+  }
+  .success-icon {
+    width: 56px;
+    height: 56px;
+    background: #1a7a2e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 28px;
+    color: var(--white);
+  }
+  .success-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+  }
+  .success-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .success-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green-wa);
+    color: var(--white);
+    font-family: 'Archivo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .success-wa:hover { background: #1fb355; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   /* ── FEATURE TICKER ── */
   .ticker-wrap {
@@ -820,11 +869,17 @@
         body: JSON.stringify({ email: email, role: roleInput.value })
       })
       .then(function() {
-        msgEl.textContent = "You're on the list! We'll be in touch soon.";
-        msgEl.className = 'form-msg success';
-        emailInput.value = '';
-        btn.textContent = 'Get early access';
-        btn.disabled = false;
+        var card = form.closest('.hero-card, .form-card');
+        var successHTML =
+          '<div class="success-state">' +
+            '<div class="success-icon">&#10003;</div>' +
+            '<div class="success-title">You\'re in!</div>' +
+            '<p class="success-text">We\'ll let you know as soon as Fat Snag is ready.<br>Welcome to the crew.</p>' +
+            '<a href="https://chat.whatsapp.com/LcNFso3laWl8WAdZn8a0QI?mode=gi_t" target="_blank" rel="noopener" class="success-wa">' +
+              'Join the WhatsApp group' +
+            '</a>' +
+          '</div>';
+        card.innerHTML = successHTML;
       })
       .catch(function() {
         msgEl.textContent = 'Something went wrong. Please try again.';
