@@ -1147,7 +1147,7 @@
 </div>
 
 <script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyBJ4aA9nZqAcyOV7hFY37ypqeRIniNwioiUURGqx7Oxy0CFDK9JV8ZiqbCykUHLfD0Ww/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyjlrmA-U1ErH0twa2Yfn02LKNzKN7YkC1JJezdPwdID0Zdo4d2uuHqEi6MXzuRFHgKkg/exec';
 
   document.querySelectorAll('.waitlist-form').forEach(function(form) {
     form.addEventListener('submit', function(e) {
@@ -1173,7 +1173,7 @@
       fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({
           email: email,
           profession: profession,
