@@ -761,6 +761,41 @@
     opacity: 0.6;
     text-align: center;
   }
+  .qr-card {
+    background: var(--cream);
+    border: 1px solid rgba(26, 18, 8, 0.12);
+    border-radius: 10px;
+    padding: 14px 14px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 18px -8px rgba(26, 18, 8, 0.18);
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto 14px;
+  }
+  .qr-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    border-radius: 4px;
+  }
+  .qr-card-caption {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--dark);
+  }
+  .qr-card-sub {
+    font-size: 10px;
+    color: var(--dark);
+    opacity: 0.6;
+    text-align: center;
+    line-height: 1.4;
+  }
 
   /* ── FOOTER ── */
   .footer {
@@ -1061,7 +1096,12 @@
         <p>A small, invite-only WhatsApp group for people who believed in Fat Snag early. Direct line to the team. Shape what we build.</p>
       </div>
       <div>
-        <a href="https://chat.whatsapp.com/LcNFso3laWl8WAdZn8a0QI?mode=gi_t" target="_blank" rel="noopener" class="wa-btn">Join the WhatsApp group →</a>
+        <div class="qr-card">
+          <img src="assets/whatsapp-qr.png" alt="QR code linking to the Fat Snag Founding Snaggers WhatsApp group">
+          <div class="qr-card-caption">Scan to join</div>
+          <div class="qr-card-sub">Open your camera and point it at the code</div>
+        </div>
+        <a href="https://chat.whatsapp.com/LcNFso3laWl8WAdZn8a0QI?mode=gi_t" target="_blank" rel="noopener" class="wa-btn">Or tap to open WhatsApp →</a>
         <div class="snaggers-foot">Small, curated group. No spam. Leave anytime.</div>
       </div>
     </div>
