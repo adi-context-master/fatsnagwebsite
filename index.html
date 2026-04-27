@@ -636,6 +636,25 @@
     width: 14px; height: 14px;
     cursor: pointer;
   }
+  .consent-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-size: 12px;
+    color: rgba(247, 242, 232, 0.75);
+    cursor: pointer;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .consent-label input[type="checkbox"] {
+    accent-color: var(--yellow);
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .consent-label span { flex: 1; }
   .submit-btn {
     width: 100%;
     background: var(--red);
@@ -1076,12 +1095,17 @@
       <div class="waitlist-card">
         <form id="waitlist-form" class="waitlist-form">
           <input class="email-input" type="email" name="email" placeholder="you@email.com" required>
+          <input class="email-input" type="text" name="profession" placeholder="What do you do? (e.g. producer, DOP, gear owner)" required>
           <div class="role-row">
             <label class="role-label"><input type="radio" name="role" value="lend" checked> I have gear to lend</label>
             <label class="role-label"><input type="radio" name="role" value="rent"> I want to rent gear</label>
           </div>
+          <label class="consent-label">
+            <input type="checkbox" name="consent" required>
+            <span>I'm happy to be contacted about Fat Snag updates.</span>
+          </label>
           <button type="submit" class="submit-btn">Get early access</button>
-          <p class="form-msg" id="waitlist-msg">Join the founding crew · No spam · Unsubscribe anytime</p>
+          <p class="form-msg" id="waitlist-msg">Limited founding spots · No spam · Unsubscribe anytime</p>
         </form>
       </div>
     </div>
@@ -1129,12 +1153,15 @@
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       var emailInput = form.querySelector('input[type="email"]');
+      var professionInput = form.querySelector('input[name="profession"]');
       var roleInput = form.querySelector('input[type="radio"]:checked');
+      var consentInput = form.querySelector('input[name="consent"]');
       var msgEl = form.querySelector('.form-msg');
       var btn = form.querySelector('button[type="submit"]');
 
       var email = emailInput.value.trim();
-      if (!email) return;
+      var profession = professionInput ? professionInput.value.trim() : '';
+      if (!email || !profession || (consentInput && !consentInput.checked)) return;
 
       btn.disabled = true;
       btn.textContent = 'Submitting...';
@@ -1147,7 +1174,12 @@
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, role: roleInput.value })
+        body: JSON.stringify({
+          email: email,
+          profession: profession,
+          role: roleInput.value,
+          consent: 'yes'
+        })
       })
       .then(function() {
         var card = form.closest('.waitlist-card');
